@@ -1,0 +1,6 @@
+<Project>
+  <!-- Projects target net8.0. Roll forward so they also run where only a newer runtime is installed. -->
+  <PropertyGroup>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+</Project>
