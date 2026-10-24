@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      { "type": "command", "bash": "node tools/hooks/ai-log.mjs sessionStart", "powershell": "node tools/hooks/ai-log.mjs sessionStart", "cwd": ".", "timeoutSec": 10 }
+    ],
+    "userPromptSubmitted": [
+      { "type": "command", "bash": "node tools/hooks/ai-log.mjs userPromptSubmitted", "powershell": "node tools/hooks/ai-log.mjs userPromptSubmitted", "cwd": ".", "timeoutSec": 10 }
+    ],
+    "preToolUse": [
+      { "type": "command", "bash": "node tools/hooks/ai-log.mjs preToolUse", "powershell": "node tools/hooks/ai-log.mjs preToolUse", "cwd": ".", "timeoutSec": 10 }
+    ],
+    "postToolUse": [
+      { "type": "command", "bash": "node tools/hooks/ai-log.mjs postToolUse", "powershell": "node tools/hooks/ai-log.mjs postToolUse", "cwd": ".", "timeoutSec": 10 },
+      { "type": "command", "bash": "node tools/hooks/format-csharp.mjs", "powershell": "node tools/hooks/format-csharp.mjs", "cwd": ".", "timeoutSec": 60 }
+    ],
+    "subagentStop": [
+      { "type": "command", "bash": "node tools/hooks/ai-log.mjs subagentStop", "powershell": "node tools/hooks/ai-log.mjs subagentStop", "cwd": ".", "timeoutSec": 10 }
+    ],
+    "agentStop": [
+      { "type": "command", "bash": "node tools/hooks/ai-log.mjs agentStop", "powershell": "node tools/hooks/ai-log.mjs agentStop", "cwd": ".", "timeoutSec": 10 }
+    ],
+    "errorOccurred": [
+      { "type": "command", "bash": "node tools/hooks/ai-log.mjs errorOccurred", "powershell": "node tools/hooks/ai-log.mjs errorOccurred", "cwd": ".", "timeoutSec": 10 }
+    ],
+    "sessionEnd": [
+      { "type": "command", "bash": "node tools/hooks/ai-log.mjs sessionEnd", "powershell": "node tools/hooks/ai-log.mjs sessionEnd", "cwd": ".", "timeoutSec": 10 }
+    ]
+  }
+}
