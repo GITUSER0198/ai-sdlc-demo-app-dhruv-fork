@@ -1,0 +1,20 @@
+schema: spec-driven
+githubCopilot:
+  cloudAgent: false
+
+# Project constraints for OpenSpec. The approval rules are in AGENTS.md.
+context: |
+  Business rules belong in backend/src/InvoiceApp.Domain only; controllers pass the signed-in username and role from the session.
+  Approval limits are inclusive. A refused approval must leave every invoice field unchanged.
+  Approver usernames are compared trimmed and case-insensitively.
+
+rules:
+  proposal:
+    - List assumptions about the approval rules under "Open questions".
+    - State what is out of scope (bulk approval, partial approval, notifications).
+  specs:
+    - Every requirement has at least one negative scenario.
+    - Write boundary scenarios at 50,000.00, 50,000.01, 500,000.00 and 500,000.01.
+  tasks:
+    - "Order task groups as AGENTS.md says. Single-approver limits first, then the two-approver rule, then the UI message and Playwright test."
+    - Each task group is one commit and includes its own tests.
