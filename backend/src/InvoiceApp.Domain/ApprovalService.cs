@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace InvoiceApp.Domain;
 
 /// <summary>
@@ -6,6 +8,9 @@ namespace InvoiceApp.Domain;
 /// </summary>
 public class ApprovalService
 {
+    public const decimal ManagerApprovalLimit = 50_000m;
+    public const decimal DirectorApprovalLimit = 500_000m;
+
     private readonly IInvoiceRepository _repository;
 
     public ApprovalService(IInvoiceRepository repository)
@@ -28,10 +33,11 @@ public class ApprovalService
         return invoice;
     }
 
-    public Invoice Approve(string invoiceId, string approver)
+    public Invoice Approve(string invoiceId, string approver, string role)
     {
         var invoice = Find(invoiceId);
         EnsurePending(invoice);
+        EnsureApprovalRoleAndLimit(role, invoice.Amount);
 
         invoice.Status = InvoiceStatus.Approved;
         invoice.DecidedBy = approver;
@@ -69,5 +75,36 @@ public class ApprovalService
             throw new InvalidOperationException(
                 $"Invoice {invoice.Id} is {invoice.Status}; only pending invoices can be decided.");
         }
+    }
+
+    private static void EnsureApprovalRoleAndLimit(string role, decimal amount)
+    {
+        if (string.Equals(role, "Manager", StringComparison.OrdinalIgnoreCase))
+        {
+            if (amount > ManagerApprovalLimit)
+            {
+                var managerLimitText = ManagerApprovalLimit.ToString("0,0", CultureInfo.InvariantCulture);
+                var amountText = amount.ToString("0,0.00", CultureInfo.InvariantCulture);
+                throw new InvalidOperationException(
+                    $"Manager approval limit is {managerLimitText}. Amount {amountText} exceeds the limit.");
+            }
+
+            return;
+        }
+
+        if (string.Equals(role, "Director", StringComparison.OrdinalIgnoreCase))
+        {
+            if (amount > DirectorApprovalLimit)
+            {
+                var directorLimitText = DirectorApprovalLimit.ToString("0,0", CultureInfo.InvariantCulture);
+                var amountText = amount.ToString("0,0.00", CultureInfo.InvariantCulture);
+                throw new InvalidOperationException(
+                    $"Director approval limit is {directorLimitText}. Amount {amountText} exceeds the single-approver limit.");
+            }
+
+            return;
+        }
+
+        throw new InvalidOperationException($"Role '{role}' cannot approve invoices.");
     }
 }

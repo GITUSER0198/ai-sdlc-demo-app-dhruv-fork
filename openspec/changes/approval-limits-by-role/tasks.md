@@ -2,9 +2,9 @@
 
 ## 1. Single-approver limits
 
-- [ ] 1.1 Add the Manager and Director inclusive approval limits and centralize role validation in `ApprovalService`; verify by running `dotnet test backend/InvoiceApp.sln --filter "ApprovalServiceTests"`.
-- [ ] 1.2 Add approval-limit boundary tests for 50,000.00, 50,000.01, 500,000.00, and 500,000.01; verify the same test suite passes.
-- [ ] 1.3 Add refusal and unchanged-state assertions for invalid approvals; verify the tests confirm `Status`, `DecidedBy`, `DecidedAt`, `DecisionNote`, and first-approver fields remain unchanged.
+- [x] 1.1 Add the Manager and Director inclusive approval limits and centralize role validation in `ApprovalService`; verify by running `dotnet test backend/InvoiceApp.sln --filter "ApprovalServiceTests"`.
+- [x] 1.2 Add approval-limit boundary tests for 50,000.00, 50,000.01, 500,000.00, and 500,000.01; verify the same test suite passes.
+- [x] 1.3 Add refusal and unchanged-state assertions for invalid approvals; verify the tests confirm `Status`, `DecidedBy`, `DecidedAt`, `DecisionNote`, and first-approver fields remain unchanged.
 
 ## 2. Two-approver rule
 

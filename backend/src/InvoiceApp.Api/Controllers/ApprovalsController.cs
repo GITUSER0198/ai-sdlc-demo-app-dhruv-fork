@@ -6,7 +6,6 @@ namespace InvoiceApp.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[RequireRole("Approver", "Admin")]
 public class ApprovalsController : ApiControllerBase
 {
     private readonly ApprovalService _approvals;
@@ -19,10 +18,15 @@ public class ApprovalsController : ApiControllerBase
     public record RejectRequest(string Reason);
 
     [HttpPost("{invoiceId}/approve")]
+    [RequireRole("Manager", "Director")]
     public ActionResult<Invoice> Approve(string invoiceId) =>
-        Handle(() => _approvals.Approve(invoiceId, HttpContext.GetSession().Username));
+        Handle(() => _approvals.Approve(
+            invoiceId,
+            HttpContext.GetSession().Username,
+            HttpContext.GetSession().Role));
 
     [HttpPost("{invoiceId}/reject")]
+    [RequireRole("Approver", "Admin")]
     public ActionResult<Invoice> Reject(string invoiceId, [FromBody] RejectRequest request) =>
         Handle(() => _approvals.Reject(invoiceId, HttpContext.GetSession().Username, request.Reason));
 }
