@@ -1,0 +1,319 @@
+{
+  "skillPurpose": {
+    "approval-rules": "Approval limits, expected outcomes, common mistakes and required tests",
+    "mutation-testing": "Run Stryker on the Domain and record the score",
+    "pr-review": "Review checklist and findings format",
+    "playwright-e2e": "Page objects, role locators and the required UI test"
+  },
+  "requests": {
+    "f116a1ac-0a37-4dea-801e-8a9954d06119#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial run while setting up agents, prompts and hooks. The shell rewrote '/context-check' into a file path, so Copilot got the wrong prompt.",
+      "action_verification": "Nothing to verify: the prompt never reached Copilot as written.",
+      "status": "discarded",
+      "suggestion": "Explained how to run the path as a local command; it never saw the real prompt."
+    },
+    "e5f898b6-e8b8-48fc-b426-79ac3f68ac75#0": {
+      "stage": "tooling-check",
+      "human_decision": "Same shell path problem as the previous trial. Prompts are typed in the chat box from here on.",
+      "status": "discarded",
+      "suggestion": "Tried to run the path as a command.",
+      "action_verification": "Nothing to verify: the prompt never reached Copilot as written."
+    },
+    "87e8a7ad-5606-46d0-9309-950bb7d2162c#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial of /context-check before the real work.",
+      "action_verification": "All six answers matched AGENTS.md and named it as the source.",
+      "status": "completed",
+      "suggestion": "Answered the six context questions from AGENTS.md."
+    },
+    "4011f167-5fba-402b-835d-2287b3ba4bfc#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial of /opsx-propose. It stopped waiting for terminal approval. Added a narrow terminal auto-approve list to .vscode/settings.json for the repo's read-only and test commands.",
+      "status": "abandoned",
+      "related_ids": [
+        "1e87e517-dffa-4ecb-861e-70ad0ec4c24b#0"
+      ],
+      "suggestion": "Started creating the OpenSpec change; stopped waiting for terminal approval.",
+      "action_verification": "Checked the repo: the change folder was incomplete, so the run was abandoned.",
+      "limitation": "Stopped before a model reply was recorded, so no model is logged."
+    },
+    "1e87e517-dffa-4ecb-861e-70ad0ec4c24b#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial spec generation. Output reverted; the real spec was generated on 25 Oct.",
+      "action_verification": "openspec validate --strict failed: missing ADDED Requirements header and no MUST/SHALL wording.",
+      "status": "discarded",
+      "suggestion": "Created proposal, spec, design and tasks for the change."
+    },
+    "98fdee7f-c7d3-45de-9adc-5b9397670d3d#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial of the spec-writer agent fixing validation. Output reverted.",
+      "action_verification": "openspec validate --strict passed after the fix.",
+      "status": "discarded",
+      "suggestion": "Reworded requirements to MUST/SHALL and added explicit boundary and casing scenarios."
+    },
+    "3df01b37-0fca-417f-b3cc-1b792fe51f65#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial of /step1-single-approver to check the implementer agent and prompt. Output reverted.",
+      "action_verification": "11/11 tests passed. Reviewed the diff: unused Approve overloads, RequireRole still allowed Approver/Admin, locale-dependent currency in messages. Prompts and agent rules were tightened afterwards (no dead code, Manager/Director only).",
+      "status": "discarded",
+      "suggestion": "Added role limits in ApprovalService with tests.",
+      "limitation": "Left unused Approve overloads, kept Approver/Admin on the endpoint, used locale-dependent currency in messages."
+    },
+    "420405ec-c005-47e9-984c-77b169cb1d0e#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial of the reviewer agent on the trial step 1 diff. Output reverted.",
+      "action_verification": "Returned 4 findings in the required format with test counts. It missed the unused overloads and the locale formatting.",
+      "status": "discarded",
+      "suggestion": "Four review findings in the required format.",
+      "limitation": "Missed the unused overloads and the locale formatting."
+    },
+    "7e1987a1-b5df-4eb2-ab2a-922e25df662c#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial of /mutation-report. Output reverted.",
+      "action_verification": "Score 52.24% on the trial code. It wrote the score row outside the list in scores.md.",
+      "status": "discarded",
+      "suggestion": "Ran Stryker, listed survivors and appended the score.",
+      "limitation": "Wrote the score row outside the list in scores.md."
+    },
+    "9366407e-fbaf-4f6c-8389-d63f477ca068#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial of /e2e-over-limit. Output reverted.",
+      "action_verification": "npm test re-run: 1 passed. Only role-based locators.",
+      "status": "discarded",
+      "suggestion": "Added the Playwright test with page objects and fixed its selectors."
+    },
+    "555e3d7c-93a7-40ed-b33e-477cedd1076f#0": {
+      "stage": "tooling-check",
+      "human_decision": "Trial of the feature-lead agent delegating the review step to subagents. Output reverted.",
+      "action_verification": "feature-lead called runSubagent for reviewer with a self-contained brief. It paused once on a terminal command outside the auto-approve list.",
+      "status": "discarded",
+      "suggestion": "Called the reviewer as a subagent and returned its findings."
+    },
+    "555e3d7c-93a7-40ed-b33e-477cedd1076f#1": {
+      "stage": "context",
+      "action_verification": "Answers matched AGENTS.md.",
+      "status": "completed",
+      "suggestion": "Answered the six context questions from AGENTS.md.",
+      "human_decision": "Accepted. Context confirmed, moved on to the spec."
+    },
+    "09bd828f-cf67-4bc8-8807-d0cc910203c8#0": {
+      "stage": "question",
+      "human_decision": "Greeting only, no action.",
+      "status": "completed",
+      "suggestion": "Greeting only.",
+      "action_verification": "No action to verify."
+    },
+    "48fd76d5-ee38-4fd4-b48c-66c3836e1bba#0": {
+      "stage": "specification",
+      "human_decision": "Ran in Ask mode by mistake. Ask mode cannot create files, so Copilot returned an invented file tree. Switched to Agent mode and ran it again.",
+      "status": "failed",
+      "related_ids": [
+        "3f9164fe-4021-4a09-8454-d1e89d55b0d9#0"
+      ],
+      "suggestion": "Printed a made-up file tree instead of creating files.",
+      "action_verification": "Checked the repo: no files were created."
+    },
+    "3f9164fe-4021-4a09-8454-d1e89d55b0d9#0": {
+      "stage": "specification",
+      "action_verification": "openspec validate approval-limits-by-role --strict failed: requirements used 'must' instead of MUST/SHALL.",
+      "human_decision": "Asked the spec-writer agent to fix validation and add boundary and casing scenarios.",
+      "status": "rework",
+      "related_ids": [
+        "318e3ff3-4b49-498e-a1c3-a57b77757420#0"
+      ],
+      "commits": [
+        "24256a4"
+      ],
+      "suggestion": "Created proposal, spec, design and tasks for approval-limits-by-role."
+    },
+    "318e3ff3-4b49-498e-a1c3-a57b77757420#0": {
+      "stage": "specification",
+      "action_verification": "openspec validate --strict: valid. Read the spec: all rules covered, scenarios at 50,000.01 and 500,000.01, same user with different casing.",
+      "limitation": "Some scenario titles say 'Payment amount' instead of 'Invoice amount'.",
+      "status": "completed",
+      "parent_task": "3f9164fe-4021-4a09-8454-d1e89d55b0d9#0",
+      "commits": [
+        "24256a4"
+      ],
+      "suggestion": "Reworded requirements to MUST, added scenarios at 50,000.01, 500,000.01 and for different casing, and re-ran validation.",
+      "human_decision": "Accepted. Committed with the spec."
+    },
+    "d65f84e0-b0e4-4861-8569-0e61515f4a18#0": {
+      "stage": "implementation",
+      "action_verification": "dotnet test re-run: 13/13 passed. Reviewed the diff: limit checks run before any field is set, boundaries tested at 50,000.00/50,000.01 and 500,000.00/500,000.01, refusal tests assert all fields, no dead code, invariant-culture messages. Copilot's own first test run failed 1 of 13 and it fixed it in the same session.",
+      "human_decision": "Accepted. Noted that the Reject endpoint is still limited to Approver/Admin; left for the review step.",
+      "status": "completed",
+      "commits": [
+        "5ab53ce"
+      ],
+      "suggestion": "Added Manager and Director limits in ApprovalService, demo accounts, endpoint roles and 13 tests."
+    },
+    "6e3b7b72-df67-48b3-a506-4f726f881b7f#0": {
+      "stage": "implementation",
+      "action_verification": "dotnet test: 17/17 passed. Logic correct: first approval recorded and invoice stays pending, second approver must be a different Director, checks before writes.",
+      "human_decision": "The test for the same Director with different casing and spaces was missing although the prompt asked for it. Asked the test-writer agent to add it.",
+      "status": "partial",
+      "related_ids": [
+        "51722e24-0746-4c03-83df-9b27bb053915#0"
+      ],
+      "commits": [
+        "638fe80"
+      ],
+      "suggestion": "Added first-approver tracking, the second-Director rule and the same-approver check, with tests."
+    },
+    "51722e24-0746-4c03-83df-9b27bb053915#0": {
+      "stage": "testing",
+      "action_verification": "dotnet test: 18/18 passed. Made the same-approver comparison case-sensitive on purpose: 2 tests failed (both same-Director tests). Restored the file.",
+      "status": "completed",
+      "parent_task": "6e3b7b72-df67-48b3-a506-4f726f881b7f#0",
+      "commits": [
+        "638fe80"
+      ],
+      "suggestion": "Added the same-Director test with different casing and spaces.",
+      "human_decision": "Accepted. Kept the test after checking it fails when the comparison is case-sensitive."
+    },
+    "e43640f8-4f36-497a-8931-6a25c8172d3b#0": {
+      "stage": "testing",
+      "action_verification": "npm test re-run: 1 passed (8.8 s). Page objects with role-based locators only. No UI change was needed.",
+      "limitation": "The test uses a fixed customer name, so it can clash if run twice against the same running app.",
+      "status": "completed",
+      "commits": [
+        "b44dfcc"
+      ],
+      "suggestion": "Added the Playwright test with page objects; fixed its own selectors after the first failing run.",
+      "human_decision": "Accepted. Committed as its own step."
+    },
+    "2ec5f540-a984-47a3-86a3-3cc0c30dba60#0": {
+      "stage": "context",
+      "human_decision": "Context check run while recording the demo.",
+      "action_verification": "Answers 1 to 4 matched AGENTS.md, including inclusive limits and the 800,000 two-approver case. Two slips: the Stryker command dropped part of the path (cd InvoiceApp.Tests instead of backend/tests/InvoiceApp.Tests), and answer 6 named no source file.",
+      "status": "completed",
+      "suggestion": "Answered the six context questions from AGENTS.md."
+    },
+    "2ec5f540-a984-47a3-86a3-3cc0c30dba60#1": {
+      "stage": "specification",
+      "human_decision": "Second demo rehearsal of the spec fix, with the word in the body set to must. Not committed.",
+      "action_verification": "Validator went from 'has issues' to 'is valid'. This time it changed only the word.",
+      "status": "discarded",
+      "suggestion": "Changed \"must\" back to \"MUST\" and re-ran validation."
+    },
+    "09aa671d-0c36-4fd1-bfcf-29d78c648e61#0": {
+      "stage": "specification",
+      "human_decision": "Demo rehearsal: changed one MUST to must in spec.md and asked the spec-writer agent to fix the validation error. Not committed.",
+      "action_verification": "Validator went from 'has issues' to 'is valid'. git diff showed it reworded the requirement heading instead of restoring the word that was changed.",
+      "limitation": "Fixed the warning by changing more than needed.",
+      "status": "discarded",
+      "suggestion": "Added MUST wording to the requirement heading and re-ran validation."
+    },
+    "ec4616bc-c6be-4012-8970-15d903a92c1d#0": {
+      "stage": "review",
+      "suggestion": "One finding, major: the duplicate-approver refusal tests do not assert that FirstApprovedAt, DecidedBy, DecidedAt and DecisionNote stay unchanged.",
+      "human_decision": "Fixed, in part. The claim was partly wrong: both duplicate-approver tests already assert DecidedBy, DecidedAt and DecisionNote. FirstApprovedAt was set up but never asserted in the same-Director-twice test, and also in the Manager-second test, which the review did not mention. Added the FirstApprovedAt check to both.",
+      "action_verification": "Read the two tests named in the finding. After adding the checks, broke the service on purpose (overwrote FirstApprovedAt before refusing): 3 tests caught it, only 1 with the old checks. Restored the service; 18/18 pass.",
+      "limitation": "Overstated the gap, missed the Manager-second test, and did not flag that the Reject endpoint still allows only Approver and Admin.",
+      "status": "completed",
+      "related_ids": [
+        "22fbf8ba-ab8b-4728-8414-85aa14676ca7#0"
+      ],
+      "commits": [
+        "638fe80"
+      ]
+    },
+    "ec4616bc-c6be-4012-8970-15d903a92c1d#1": {
+      "stage": "review",
+      "suggestion": "One finding, medium: the duplicate-approver refusal tests do not assert FirstApprovedAt and the other unchanged fields. Said it verified with dotnet test, 18 passed.",
+      "human_decision": "Dismissed. Same claim as the first review, and no longer true: all three refusal tests that set FirstApprovedAt now assert it, along with DecidedBy, DecidedAt and DecisionNote.",
+      "action_verification": "Checked the tests at HEAD (lines 147, 171, 187). The request made no tool calls: it read no files, ran no diff and no tests, so the test result it reported came from the earlier review in the same chat.",
+      "limitation": "Answered from the earlier chat context instead of re-reading the code, and reported a test run it did not do.",
+      "status": "discarded",
+      "related_ids": [
+        "ec4616bc-c6be-4012-8970-15d903a92c1d#0"
+      ]
+    },
+    "22fbf8ba-ab8b-4728-8414-85aa14676ca7#0": {
+      "stage": "testing",
+      "suggestion": "Stored FirstApprovedAt in a variable and asserted it is unchanged in the two refusal tests; ran the tests.",
+      "human_decision": "Accepted. This is the fix for review finding 1.",
+      "action_verification": "Read the diff: only the two tests changed. dotnet test: 18/18 passed. Broke the service on purpose (overwrote FirstApprovedAt before refusing): 3 tests caught it, only 1 before the fix. Restored the service.",
+      "status": "completed",
+      "related_ids": [
+        "ec4616bc-c6be-4012-8970-15d903a92c1d#0"
+      ],
+      "commits": [
+        "638fe80"
+      ]
+    }
+  },
+  "manual": [
+    {
+      "id": "20261024T053500Z-manual-baseline-mutation",
+      "timestamp": "2026-10-24T05:35:00Z",
+      "stage": "testing",
+      "request": "Mutation baseline on upstream main before any change",
+      "commands_run": [
+        {
+          "command": "dotnet stryker --project InvoiceApp.Domain.csproj",
+          "exit_code": 0,
+          "result": [
+            "The final mutation score is 30.77 %"
+          ]
+        }
+      ],
+      "artifacts": [
+        "records/mutation/scores.md"
+      ],
+      "status": "completed",
+      "human_decision": "Recorded as the before score.",
+      "action_verification": "Score read from the Stryker output; 7 tests on upstream main."
+    },
+    {
+      "id": "20261027T094000Z-manual-step-commits",
+      "timestamp": "2026-10-27T09:40:00Z",
+      "stage": "implementation",
+      "request": "Commit each step separately: spec, single-approver limits, two-approver rule, e2e test",
+      "commands_run": [
+        {
+          "command": "dotnet test backend/InvoiceApp.sln",
+          "exit_code": 0,
+          "result": [
+            "Step 1 commit: 13 passed",
+            "Step 2 commit: 18 passed",
+            "E2E commit: 18 passed"
+          ]
+        }
+      ],
+      "human_decision": "One commit per step so each can be reviewed on its own. Every commit builds and its tests pass.",
+      "commits": [
+        "24256a4",
+        "5ab53ce",
+        "638fe80",
+        "b44dfcc"
+      ],
+      "status": "completed",
+      "action_verification": "Ran the full test suite on each commit before moving on."
+    },
+    {
+      "id": "20261027T094500Z-manual-mutation-after",
+      "timestamp": "2026-10-27T09:45:00Z",
+      "stage": "testing",
+      "request": "Mutation score after the feature",
+      "commands_run": [
+        {
+          "command": "dotnet stryker --project InvoiceApp.Domain.csproj",
+          "exit_code": 0,
+          "result": [
+            "The final mutation score is 56.70 %"
+          ]
+        }
+      ],
+      "action_verification": "ApprovalService.cs alone 70.5%. Surviving mutants show no test for an Approver or Admin starting an approval above 500,000, and an unreachable Director over-limit branch.",
+      "artifacts": [
+        "records/mutation/scores.md",
+        "ASSIGNMENT.md"
+      ],
+      "status": "completed",
+      "human_decision": "Recorded as the after score; survivors written up in scores.md."
+    }
+  ]
+}
