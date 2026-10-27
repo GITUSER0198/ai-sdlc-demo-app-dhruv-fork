@@ -14,5 +14,5 @@
 
 ## 3. UI and end-to-end verification
 
-- [ ] 3.1 Update the invoice approval UI and API message flow so a Manager attempting more than 50,000.00 sees a clear refusal reason without changing invoice state; verify by running the relevant API or UI tests.
-- [ ] 3.2 Add a Playwright scenario that asserts a Manager approval above 50,000.00 shows the reason and leaves the invoice pending; verify with `cd e2e && npm test`.
+- [x] 3.1 Update the invoice approval UI and API message flow so a Manager attempting more than 50,000.00 sees a clear refusal reason without changing invoice state; verify by running the relevant API or UI tests.
+- [x] 3.2 Add a Playwright scenario that asserts a Manager approval above 50,000.00 shows the reason and leaves the invoice pending; verify with `cd e2e && npm test`.
