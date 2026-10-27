@@ -17,6 +17,8 @@ public class ApprovalServiceTests
         Assert.Null(invoice.DecidedBy);
         Assert.Null(invoice.DecidedAt);
         Assert.Null(invoice.DecisionNote);
+        Assert.Null(invoice.FirstApprover);
+        Assert.Null(invoice.FirstApprovedAt);
     }
 
     [Fact]
@@ -83,15 +85,110 @@ public class ApprovalServiceTests
     }
 
     [Fact]
-    public void Approve_Director_RefusesAboveFiveHundredThousandForNow_AndLeavesInvoiceUnchanged()
+    public void Approve_Director_RecordsFirstApprovalAboveFiveHundredThousand_AndKeepsInvoicePending()
     {
         var invoice = InvoiceWith("INV-1", InvoiceStatus.PendingApproval, 500000.01m);
         var service = ServiceFor(invoice);
 
-        var ex = Assert.Throws<InvalidOperationException>(() => service.Approve("INV-1", "demo.director", "Director"));
+        var result = service.Approve("INV-1", "demo.director", "Director");
 
-        Assert.Contains("500,000", ex.Message);
-        AssertInvoiceUnchanged(invoice);
+        Assert.Equal(InvoiceStatus.PendingApproval, result.Status);
+        Assert.Equal("demo.director", result.FirstApprover);
+        Assert.NotNull(result.FirstApprovedAt);
+        Assert.Null(result.DecidedBy);
+        Assert.Null(result.DecidedAt);
+    }
+
+    [Fact]
+    public void Approve_FirstDirectorApprovalAboveFiveHundredThousand_RecordsFirstApprover_AndKeepsInvoicePending()
+    {
+        var invoice = InvoiceWith("INV-1", InvoiceStatus.PendingApproval, 800000m);
+        var service = ServiceFor(invoice);
+
+        var result = service.Approve("INV-1", "demo.director", "Director");
+
+        Assert.Equal(InvoiceStatus.PendingApproval, result.Status);
+        Assert.Equal("demo.director", result.FirstApprover);
+        Assert.NotNull(result.FirstApprovedAt);
+        Assert.Null(result.DecidedBy);
+        Assert.Null(result.DecidedAt);
+    }
+
+    [Fact]
+    public void Approve_ManagerFirst_DirectorSecond_OnLargeInvoice_ApprovesAndRecordsBothApprovers()
+    {
+        var invoice = InvoiceWith("INV-1", InvoiceStatus.PendingApproval, 800000m);
+        invoice.FirstApprover = "demo.manager";
+        invoice.FirstApprovedAt = DateTime.UtcNow.AddMinutes(-5);
+        var service = ServiceFor(invoice);
+
+        var result = service.Approve("INV-1", "demo.director", "Director");
+
+        Assert.Equal(InvoiceStatus.Approved, result.Status);
+        Assert.Equal("demo.director", result.DecidedBy);
+        Assert.NotNull(result.DecidedAt);
+        Assert.Equal("demo.manager", result.FirstApprover);
+        Assert.NotNull(result.FirstApprovedAt);
+    }
+
+    [Fact]
+    public void Approve_SameDirectorTwice_OnLargeInvoice_RefusesAndLeavesInvoiceUnchanged()
+    {
+        var invoice = InvoiceWith("INV-1", InvoiceStatus.PendingApproval, 800000m);
+        var initialFirstApprovedAt = DateTime.UtcNow.AddMinutes(-5);
+        invoice.FirstApprover = "demo.director";
+        invoice.FirstApprovedAt = initialFirstApprovedAt;
+        var service = ServiceFor(invoice);
+
+        var ex = Assert.Throws<InvalidOperationException>(() => service.Approve("INV-1", " DEMO.DIRECTOR ", "Director"));
+
+        Assert.Contains("different", ex.Message);
+        Assert.Equal("demo.director", invoice.FirstApprover);
+        Assert.Equal(InvoiceStatus.PendingApproval, invoice.Status);
+        Assert.Null(invoice.DecidedBy);
+        Assert.Null(invoice.DecidedAt);
+        Assert.Null(invoice.DecisionNote);
+        Assert.Equal(initialFirstApprovedAt, invoice.FirstApprovedAt);
+    }
+
+    [Fact]
+    public void Approve_SameDirectorSecondApproval_WithDifferentCasingAndSpaces_RefusesAndLeavesInvoiceUnchanged()
+    {
+        var invoice = InvoiceWith("INV-1", InvoiceStatus.PendingApproval, 800000m);
+        var initialFirstApprovedAt = DateTime.UtcNow.AddMinutes(-5);
+        invoice.FirstApprover = "demo.director";
+        invoice.FirstApprovedAt = initialFirstApprovedAt;
+        var service = ServiceFor(invoice);
+
+        var ex = Assert.Throws<InvalidOperationException>(() => service.Approve("INV-1", " DEMO.Director ", "Director"));
+
+        Assert.Contains("different", ex.Message);
+        Assert.Equal(InvoiceStatus.PendingApproval, invoice.Status);
+        Assert.Null(invoice.DecidedBy);
+        Assert.Null(invoice.DecidedAt);
+        Assert.Null(invoice.DecisionNote);
+        Assert.Equal("demo.director", invoice.FirstApprover);
+        Assert.Equal(initialFirstApprovedAt, invoice.FirstApprovedAt);
+    }
+
+    [Fact]
+    public void Approve_ManagerSecond_OnLargeInvoice_RefusesAndLeavesInvoiceUnchanged()
+    {
+        var invoice = InvoiceWith("INV-1", InvoiceStatus.PendingApproval, 800000m);
+        var initialFirstApprovedAt = DateTime.UtcNow.AddMinutes(-5);
+        invoice.FirstApprover = "demo.director";
+        invoice.FirstApprovedAt = initialFirstApprovedAt;
+        var service = ServiceFor(invoice);
+
+        var ex = Assert.Throws<InvalidOperationException>(() => service.Approve("INV-1", "demo.manager", "Manager"));
+
+        Assert.Contains("Director", ex.Message);
+        Assert.Equal("demo.director", invoice.FirstApprover);
+        Assert.Equal(InvoiceStatus.PendingApproval, invoice.Status);
+        Assert.Null(invoice.DecidedBy);
+        Assert.Null(invoice.DecidedAt);
+        Assert.Null(invoice.DecisionNote);
+        Assert.Equal(initialFirstApprovedAt, invoice.FirstApprovedAt);
     }
 
     [Theory]

@@ -8,9 +8,9 @@
 
 ## 2. Two-approver rule
 
-- [ ] 2.1 Enforce the two-approver requirement above 500,000.00 and require a second approver to be a Director; verify with dedicated xUnit tests for the duplicate and role mismatch cases.
-- [ ] 2.2 Normalize approver usernames using trimmed, case-insensitive comparison to prevent the same user from counting twice; verify with tests covering the same username in different casing and with whitespace.
-- [ ] 2.3 Keep the invoice in `PendingApproval` after the first approval when the second approver requirement is unmet; verify by asserting the invoice status and fields remain pending and unchanged.
+- [x] 2.1 Enforce the two-approver requirement above 500,000.00 and require a second approver to be a Director; verify with dedicated xUnit tests for the duplicate and role mismatch cases.
+- [x] 2.2 Normalize approver usernames using trimmed, case-insensitive comparison to prevent the same user from counting twice; verify with tests covering the same username in different casing and with whitespace.
+- [x] 2.3 Keep the invoice in `PendingApproval` after the first approval when the second approver requirement is unmet; verify by asserting the invoice status and fields remain pending and unchanged.
 
 ## 3. UI and end-to-end verification
 

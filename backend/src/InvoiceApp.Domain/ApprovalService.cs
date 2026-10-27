@@ -37,10 +37,44 @@ public class ApprovalService
     {
         var invoice = Find(invoiceId);
         EnsurePending(invoice);
+
+        var normalizedApprover = NormalizeApproverName(approver);
+
+        if (invoice.Amount > DirectorApprovalLimit)
+        {
+            if (string.IsNullOrWhiteSpace(invoice.FirstApprover))
+            {
+                EnsureApprovalRoleCanApprove(role);
+
+                invoice.FirstApprover = normalizedApprover;
+                invoice.FirstApprovedAt = DateTime.UtcNow;
+                _repository.Update(invoice);
+                return invoice;
+            }
+
+            if (IsSameApprover(invoice.FirstApprover, normalizedApprover))
+            {
+                throw new InvalidOperationException(
+                    $"Second approval above 500,000 requires a different approver than the first. Approver '{normalizedApprover}' cannot approve the same invoice twice.");
+            }
+
+            if (!string.Equals(role, "Director", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    "Second approval above 500,000 requires a Director.");
+            }
+
+            invoice.Status = InvoiceStatus.Approved;
+            invoice.DecidedBy = normalizedApprover;
+            invoice.DecidedAt = DateTime.UtcNow;
+            _repository.Update(invoice);
+            return invoice;
+        }
+
         EnsureApprovalRoleAndLimit(role, invoice.Amount);
 
         invoice.Status = InvoiceStatus.Approved;
-        invoice.DecidedBy = approver;
+        invoice.DecidedBy = normalizedApprover;
         invoice.DecidedAt = DateTime.UtcNow;
         _repository.Update(invoice);
         return invoice;
@@ -107,4 +141,20 @@ public class ApprovalService
 
         throw new InvalidOperationException($"Role '{role}' cannot approve invoices.");
     }
+
+    private static void EnsureApprovalRoleCanApprove(string role)
+    {
+        if (!string.Equals(role, "Manager", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(role, "Director", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException($"Role '{role}' cannot approve invoices.");
+        }
+    }
+
+    private static string NormalizeApproverName(string approver) => approver.Trim();
+
+    private static bool IsSameApprover(string? firstApprover, string? approver) =>
+        !string.IsNullOrWhiteSpace(firstApprover)
+        && !string.IsNullOrWhiteSpace(approver)
+        && string.Equals(firstApprover.Trim(), approver.Trim(), StringComparison.OrdinalIgnoreCase);
 }
