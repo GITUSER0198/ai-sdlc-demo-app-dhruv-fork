@@ -1,0 +1,29 @@
+{
+  "chat.useAgentsMdFile": true,
+
+  // Custom agents (.github/agents), skills (.github/skills) and hooks (.github/hooks) for this repo.
+  "chat.useAgentSkills": true,
+  "chat.useHooks": true,
+  "chat.hookFilesLocations": { ".github/hooks": true },
+
+  // Commands agents may run without confirmation. Everything else asks.
+  "chat.tools.terminal.autoApprove": {
+    "/^openspec (list|status|show|context|instructions|validate|new change)\\b/": true,
+    "/^dotnet (build|test|format|tool restore|stryker)\\b/": true,
+    "/^git (status|diff|log|show)\\b/": true,
+    "/^npm (test|run test:headed)$/": true,
+    "/^npx playwright test\\b/": true,
+    "/^node \\.github/skills/mutation-testing/summarize\\.mjs\\b/": true
+  },
+
+  // Format for Copilot-generated commit messages and PR descriptions.
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    { "text": "Short imperative subject under 60 characters, a blank line, then one or two sentences on why. No headings, lists or emoji." }
+  ],
+  "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
+    { "text": "Short. What changed and why, test counts, mutation score before and after, then the review findings as a numbered list with a verdict for each: fixed (commit), dismissed (reason) or deferred (reason)." }
+  ],
+  "github.copilot.chat.reviewSelection.instructions": [
+    { "file": ".github/skills/pr-review/SKILL.md" }
+  ]
+}
